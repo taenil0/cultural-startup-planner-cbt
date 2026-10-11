@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문화창업플래너 자격시험 실전 CBT 모의고사</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    body {
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- 로고 및 타이틀 -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 to-indigo-500 flex items-center justify-center shadow-md">
+            <i class="fa-solid fa-graduation-cap text-xl text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight flex items-center gap-2">
+              문화창업플래너 자격시험 <span class="text-xs bg-amber-400 text-indigo-950 font-black px-2 py-0.5 rounded-full uppercase tracking-wider">CBT 실전 모의고사</span>
+            </h1>
+            <p class="text-xs text-indigo-200 hidden sm:block">강사 직강 핵심 출제포인트 기반 80선 (과목별 20문항)</p>
+          </div>
+        </div>
+
+        <!-- 모드 전환 & 계산기 & 상태바 -->
+        <div class="flex items-center space-x-2 sm:space-x-4">
+          <!-- 모드 전환 스위치 -->
+          <div class="bg-indigo-950/70 p-1 rounded-xl flex items-center border border-indigo-700/50">
+            <button id="btnModeStudy" onclick="switchMode('study')" class="px-2.5 py-1 text-xs sm:text-sm rounded-lg font-semibold transition-all duration-200 flex items-center gap-1.5 bg-indigo-600 text-white shadow">
+              <i class="fa-solid fa-lightbulb text-amber-300"></i> 학습모드
+            </button>
+            <button id="btnModeExam" onclick="switchMode('exam')" class="px-2.5 py-1 text-xs sm:text-sm rounded-lg font-semibold transition-all duration-200 flex items-center gap-1.5 text-indigo-200 hover:text-white">
+              <i class="fa-solid fa-stopwatch text-rose-400"></i> 실전시험
+            </button>
+          </div>
+
+          <!-- 실전 타이머 (실전 모드 시 표시) -->
+          <div id="examTimerBadge" class="hidden items-center gap-1.5 bg-rose-950/80 border border-rose-500/50 text-rose-200 px-3 py-1 rounded-xl font-mono text-sm font-bold">
+            <i class="fa-regular fa-clock animate-pulse text-rose-400"></i>
+            <span id="timerText">25:00</span>
+          </div>
+
+          <!-- 자금조달 계산기 버튼 -->
+          <button onclick="toggleCalculator()" class="p-2 sm:px-3 sm:py-1.5 bg-indigo-800/80 hover:bg-indigo-700 text-indigo-100 rounded-xl text-xs sm:text-sm font-medium flex items-center gap-1.5 border border-indigo-600/60 transition shadow-sm" title="공학/재무 계산기 열기">
+            <i class="fa-solid fa-calculator text-amber-300"></i>
+            <span class="hidden md:inline">재무 계산기</span>
+          </button>
+
+          <!-- 워드/구글독스 시험지 다운로드 버튼 -->
+          <button onclick="toggleDownloadModal()" class="p-2 sm:px-3 sm:py-1.5 bg-amber-400 hover:bg-amber-300 text-indigo-950 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition" title="워드/구글독스 시험지 다운로드">
+            <i class="fa-solid fa-file-word"></i>
+            <span class="hidden sm:inline">시험지 문서 (워드)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 과목 선택 탭 바 -->
+    <div class="bg-indigo-950/90 border-t border-indigo-800/60 overflow-x-auto custom-scrollbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-2 py-2">
+        <button onclick="selectSubject('subject1')" id="tab-subject1" class="subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 bg-amber-400 text-indigo-950 shadow-sm">
+          <i class="fa-solid fa-book-open"></i> 1과목 창업이해 (20문항)
+        </button>
+        <button onclick="selectSubject('subject2')" id="tab-subject2" class="subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 text-indigo-200 hover:bg-indigo-800/60">
+          <i class="fa-solid fa-chess"></i> 2과목 기획·전략 (20문항)
+        </button>
+        <button onclick="selectSubject('subject3')" id="tab-subject3" class="subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 text-indigo-200 hover:bg-indigo-800/60">
+          <i class="fa-solid fa-coins"></i> 3과목 자금조달 (20문항)
+        </button>
+        <button onclick="selectSubject('subject4')" id="tab-subject4" class="subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 text-indigo-200 hover:bg-indigo-800/60">
+          <i class="fa-solid fa-users"></i> 4과목 조직관리 (20문항)
+        </button>
+        <button onclick="selectSubject('all')" id="tab-all" class="subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 text-indigo-200 hover:bg-indigo-800/60">
+          <i class="fa-solid fa-trophy text-amber-300"></i> 전과목 종합 (80문항)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 레이아웃 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- 좌측/상단: 문제 풀이 영역 (8열) -->
+    <div class="lg:col-span-8 flex flex-col space-y-4">
+
+      <!-- 과목 정보 안내 배너 -->
+      <div id="subjectBanner" class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="subjectBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-700">1과목</span>
+            <h2 id="subjectTitle" class="text-base sm:text-lg font-bold text-slate-800">문화콘텐츠 창업의 이해</h2>
+          </div>
+          <p id="subjectDesc" class="text-xs sm:text-sm text-slate-500 mt-1">서비스 3대 특성(소멸성·무형성·이질성) 극복 기제, 컨셉(장르+코드), 보글러 12단계 서사 구조</p>
+        </div>
+        <div class="flex items-center gap-3 self-end sm:self-center">
+          <button onclick="toggleBookmarkCurrent()" id="btnBookmark" class="px-3 py-1.5 rounded-xl border border-slate-200 hover:border-amber-400 text-slate-500 hover:text-amber-500 text-xs sm:text-sm font-medium flex items-center gap-1.5 transition">
+            <i class="fa-regular fa-star text-amber-400"></i> <span>북마크</span>
+          </button>
+          <div class="text-right">
+            <span class="text-xs text-slate-400 block">진행 상황</span>
+            <span id="progressText" class="text-sm font-extrabold text-indigo-600">1 / 20</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 문제 카드 -->
+      <div class="bg-white rounded-2xl p-5 sm:p-7 shadow-sm border border-slate-200/80 flex-1 flex flex-col justify-between">
+        <div>
+          <!-- 문제 헤더 (문항 번호 & 필터 태그) -->
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span id="qNumberTag" class="text-sm font-black text-white bg-indigo-600 px-3 py-1 rounded-lg shadow-sm">Q1</span>
+              <span id="qSubjectTag" class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">과목1</span>
+            </div>
+            <span class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-regular fa-keyboard"></i> 숫자키 1~4로 선택 가능</span>
+          </div>
+
+          <!-- 문제 본문 -->
+          <div class="my-5">
+            <p id="qText" class="text-base sm:text-lg font-medium leading-relaxed text-slate-900">
+              문화콘텐츠 산업은 제조업과 달리 서비스업의 본질적인 특성을 공유한다. 다음 중 문화콘텐츠의 3대 서비스적 특성과 그에 대한 설명으로 가장 올바른 것은?
+            </p>
+          </div>
+
+          <!-- 4지선다 보기 리스트 -->
+          <div id="optionsContainer" class="space-y-3 my-6">
+            <!-- 동적으로 생성 -->
+          </div>
+        </div>
+
+        <!-- 하단: 학습모드 해설 박스 (정답 확인 시 표시) -->
+        <div id="explanationBox" class="hidden mt-6 p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center gap-2">
+            <span id="answerResultBadge" class="text-xs font-bold px-2 py-0.5 rounded text-white bg-emerald-600">정답</span>
+            <span class="text-xs font-bold text-slate-600">정답: <strong id="correctAnswerNum" class="text-indigo-600">④</strong>번</span>
+          </div>
+          <!-- 강사 출제 힌트 -->
+          <div id="hintRow" class="flex items-start gap-2 text-xs bg-amber-50 text-amber-900 p-2.5 rounded-lg border border-amber-200/60">
+            <i class="fa-solid fa-bullhorn text-amber-600 mt-0.5"></i>
+            <div>
+              <strong class="font-bold">강사 직강 출제 힌트:</strong>
+              <span id="hintText">강사 발언 녹음 기반 출제 포인트</span>
+            </div>
+          </div>
+          <!-- 상세 해설 -->
+          <div class="text-xs sm:text-sm text-slate-700 leading-relaxed pt-1">
+            <strong class="text-slate-900 block mb-1">💡 상세 해설:</strong>
+            <p id="explanationText">상세 해설 내용이 여기에 들어갑니다.</p>
+          </div>
+        </div>
+
+        <!-- 네비게이션 버튼 바 -->
+        <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-6">
+          <button onclick="prevQuestion()" id="btnPrev" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-arrow-left"></i> 이전 문제
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button onclick="resetCurrentQuiz()" class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-500 text-xs font-medium transition" title="현재 과목 답안 초기화">
+              <i class="fa-solid fa-rotate-right"></i> 초기화
+            </button>
+            <button onclick="submitExam()" id="btnSubmitExam" class="hidden px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold shadow-md transition items-center gap-1.5">
+              <i class="fa-solid fa-paper-plane"></i> 최종 시험 제출
+            </button>
+          </div>
+
+          <button onclick="nextQuestion()" id="btnNext" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold flex items-center gap-2 shadow-sm transition disabled:opacity-40 disabled:cursor-not-allowed">
+            다음 문제 <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 우측: OMR 답안지 & 네비게이터 (4열) -->
+    <div class="lg:col-span-4 flex flex-col space-y-4">
+
+      <!-- OMR 카드 패널 -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 sticky top-24">
+        <!-- OMR 헤더 & 필터 -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+            <h3 class="font-bold text-slate-800 text-sm">OMR 답안 현황</h3>
+          </div>
+          <!-- 필터 칩 -->
+          <div class="flex items-center gap-1 text-[11px]">
+            <button onclick="setFilter('all')" id="filter-all" class="omr-filter px-2 py-0.5 rounded font-semibold bg-indigo-100 text-indigo-700">전체</button>
+            <button onclick="setFilter('unsolved')" id="filter-unsolved" class="omr-filter px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100">미풀이</button>
+            <button onclick="setFilter('bookmarked')" id="filter-bookmarked" class="omr-filter px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100">북마크</button>
+            <button onclick="setFilter('wrong')" id="filter-wrong" class="omr-filter px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100">오답</button>
+          </div>
+        </div>
+
+        <!-- 풀이 현황 요약 바 -->
+        <div class="grid grid-cols-3 gap-2 my-3 text-center">
+          <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+            <span class="text-[11px] text-slate-400 block">풀이 완료</span>
+            <span id="omrSolvedCount" class="text-sm font-extrabold text-indigo-600">0</span>
+          </div>
+          <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+            <span class="text-[11px] text-slate-400 block">남은 문제</span>
+            <span id="omrRemainCount" class="text-sm font-extrabold text-slate-600">20</span>
+          </div>
+          <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+            <span class="text-[11px] text-slate-400 block">정답률 (학습)</span>
+            <span id="omrAccuracy" class="text-sm font-extrabold text-emerald-600">- %</span>
+          </div>
+        </div>
+
+        <!-- OMR 번호 그리드 -->
+        <div class="max-h-[380px] overflow-y-auto custom-scrollbar pr-1 my-2">
+          <div id="omrGrid" class="grid grid-cols-5 gap-2">
+            <!-- 1~20 또는 1~80 문항 번호 버튼 동적 생성 -->
+          </div>
+        </div>
+
+        <!-- OMR 범례 설명 -->
+        <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-500 gap-y-1">
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-100 border border-slate-300 inline-block"></span> 미풀이</div>
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-indigo-600 inline-block"></span> 마킹완료</div>
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> 정답</div>
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500 inline-block"></span> 오답</div>
+          <div class="flex items-center gap-1.5"><i class="fa-solid fa-star text-amber-400"></i> 북마크</div>
+        </div>
+
+        <!-- 하단 실전 액션 버튼 -->
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <button onclick="submitExam()" id="btnOmrSubmit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check-double"></i> <span>최종 채점 및 성적표 보기</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 재무 계산기 팝업 모달 -->
+  <div id="calcModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-sm w-full overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="bg-indigo-900 text-white px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-calculator text-amber-400"></i>
+          <span class="font-bold text-sm">3과목 전용 재무 계산기</span>
+        </div>
+        <button onclick="toggleCalculator()" class="text-indigo-300 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="p-4 bg-slate-50">
+        <!-- 계산기 디스플레이 -->
+        <div class="bg-slate-900 text-white rounded-xl p-3 text-right font-mono mb-3 shadow-inner">
+          <div id="calcHistory" class="text-xs text-slate-400 h-4 overflow-hidden"></div>
+          <div id="calcDisplay" class="text-2xl font-bold tracking-wider">0</div>
+        </div>
+        <!-- 계산기 키패드 -->
+        <div class="grid grid-cols-4 gap-2 text-sm font-semibold">
+          <button onclick="calcClear()" class="p-2.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg">C</button>
+          <button onclick="calcBackspace()" class="p-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg">⌫</button>
+          <button onclick="calcOp('%')" class="p-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg">%</button>
+          <button onclick="calcOp('/')" class="p-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg">÷</button>
+
+          <button onclick="calcNum('7')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">7</button>
+          <button onclick="calcNum('8')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">8</button>
+          <button onclick="calcNum('9')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">9</button>
+          <button onclick="calcOp('*')" class="p-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg">×</button>
+
+          <button onclick="calcNum('4')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">4</button>
+          <button onclick="calcNum('5')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">5</button>
+          <button onclick="calcNum('6')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">6</button>
+          <button onclick="calcOp('-')" class="p-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg">-</button>
+
+          <button onclick="calcNum('1')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">1</button>
+          <button onclick="calcNum('2')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">2</button>
+          <button onclick="calcNum('3')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">3</button>
+          <button onclick="calcOp('+')" class="p-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg">+</button>
+
+          <button onclick="calcNum('0')" class="col-span-2 p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">0</button>
+          <button onclick="calcNum('.')" class="p-2.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg shadow-sm">.</button>
+          <button onclick="calcEquals()" class="p-2.5 bg-amber-400 hover:bg-amber-500 text-indigo-950 font-bold rounded-lg shadow-sm">=</button>
+        </div>
+      </div>
+      <!-- 계산 공식 퀵 가이드 -->
+      <div class="p-3 bg-white border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+        <p>• <strong>손익분기점(BEP)</strong> = 고정비 ÷ (판매가 - 변동비)</p>
+        <p>• <strong>Post-money</strong> = Pre-money + 투자유치금</p>
+        <p>• <strong>투자자 지분율</strong> = 투자금 ÷ Post-money 가치</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 워드/구글독스 시험지 다운로드 모달 -->
+  <div id="downloadModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="bg-indigo-900 text-white px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-400 text-indigo-950 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-file-word"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base">과목별 시험지 다운로드</h3>
+            <p class="text-[11px] text-indigo-200">MS Word (.docx) 및 구글 드라이브(Google Docs) 연동</p>
+          </div>
+        </div>
+        <button onclick="toggleDownloadModal()" class="text-indigo-300 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto custom-scrollbar">
+        <p class="text-xs text-slate-500 leading-relaxed">
+          각 과목별 20문항(선택지, 정답, 강사 출제 힌트, 상세 해설 포함)을 정갈하게 편집한 워드 문서입니다. 다운로드 후 <strong>MS Word</strong>로 바로 열거나, <strong>구글 드라이브에 업로드하여 Google 문서(Google Docs)</strong>로 편집하실 수 있습니다.
+        </p>
+
+        <!-- 파일 목록 -->
+        <div class="space-y-2.5">
+          <a href="./01_과목1_문화콘텐츠_창업의_이해_예상기출문제_20선.docx" download class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-indigo-50/80 border border-slate-200 hover:border-indigo-300 transition group">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">1</span>
+              <div>
+                <span class="font-bold text-xs sm:text-sm text-slate-800 group-hover:text-indigo-900 block">1과목: 문화콘텐츠 창업의 이해 (20선)</span>
+                <span class="text-[11px] text-slate-400">백상훈 대표 직강 포인트 반영 (.docx)</span>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white shadow-xs transition flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> 받기
+            </span>
+          </a>
+
+          <a href="./02_과목2_문화콘텐츠_창업기획_및_전략수립_예상기출문제_20선.docx" download class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-indigo-50/80 border border-slate-200 hover:border-indigo-300 transition group">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">2</span>
+              <div>
+                <span class="font-bold text-xs sm:text-sm text-slate-800 group-hover:text-indigo-900 block">2과목: 창업기획 및 전략수립 (20선)</span>
+                <span class="text-[11px] text-slate-400">이일한 교수 직강 포인트 반영 (.docx)</span>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white shadow-xs transition flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> 받기
+            </span>
+          </a>
+
+          <a href="./03_과목3_문화콘텐츠기업_자금조달_예상기출문제_20선.docx" download class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-indigo-50/80 border border-slate-200 hover:border-indigo-300 transition group">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">3</span>
+              <div>
+                <span class="font-bold text-xs sm:text-sm text-slate-800 group-hover:text-indigo-900 block">3과목: 문화콘텐츠기업 자금조달 (20선)</span>
+                <span class="text-[11px] text-slate-400">오상민 대표 직강 포인트 & 계산식 반영 (.docx)</span>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white shadow-xs transition flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> 받기
+            </span>
+          </a>
+
+          <a href="./04_과목4_문화콘텐츠기업_조직관리_예상기출문제_20선.docx" download class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-indigo-50/80 border border-slate-200 hover:border-indigo-300 transition group">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">4</span>
+              <div>
+                <span class="font-bold text-xs sm:text-sm text-slate-800 group-hover:text-indigo-900 block">4과목: 문화콘텐츠기업 조직관리 (20선)</span>
+                <span class="text-[11px] text-slate-400">김은경 위촉교수 직강 포인트 반영 (.docx)</span>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white shadow-xs transition flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> 받기
+            </span>
+          </a>
+
+          <a href="./문화창업플래너_전과목_종합실전모의고사_80선.docx" download class="flex items-center justify-between p-3.5 rounded-xl bg-gradient-to-r from-amber-50 to-indigo-50 hover:from-amber-100 hover:to-indigo-100 border border-amber-200 hover:border-amber-400 transition group">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-amber-400 text-indigo-950 flex items-center justify-center text-xs font-black"><i class="fa-solid fa-trophy"></i></span>
+              <div>
+                <span class="font-bold text-xs sm:text-sm text-indigo-950 block">🏆 전과목 종합 실전 모의고사 (80문항 통합본)</span>
+                <span class="text-[11px] text-indigo-600 font-medium">1~4과목 전과목 통합 인쇄용 시험지 (.docx)</span>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-xs font-bold shadow-xs transition flex items-center gap-1 group-hover:bg-indigo-700">
+              <i class="fa-solid fa-download"></i> 받기
+            </span>
+          </a>
+        </div>
+
+        <!-- 구글 드라이브 동기화 폴더 안내 -->
+        <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-200 text-xs text-emerald-900 space-y-1.5">
+          <div class="flex items-center gap-1.5 font-bold text-emerald-800">
+            <i class="fa-brands fa-google-drive text-emerald-600 text-sm"></i>
+            <span>구글 드라이브 실시간 자동 저장 완료</span>
+          </div>
+          <p class="text-[11px] text-emerald-700 leading-relaxed">
+            PC의 구글 드라이브 폴더(<code>G:\내 드라이브\창업관련\문화창업플래너 자격시험 자료\2회</code>)에도 이미 파일이 동기화되어 있어, <strong>Google Drive 웹/모바일 앱에서 즉시 'Google 문서로 열기'</strong>가 가능합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 성적표 및 최종 채점 모달 -->
+  <div id="resultModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="bg-gradient-to-r from-indigo-900 to-indigo-800 text-white p-6 text-center relative">
+        <button onclick="closeResultModal()" class="absolute top-4 right-4 text-indigo-300 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+        <div id="resultIcon" class="w-16 h-16 rounded-2xl bg-amber-400 text-indigo-950 flex items-center justify-center mx-auto mb-3 text-3xl font-black shadow-lg">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h3 id="resultTitle" class="text-2xl font-black">최종 합격을 축하합니다!</h3>
+        <p id="resultSub" class="text-indigo-200 text-xs sm:text-sm mt-1">문화창업플래너 자격시험 합격 기준: 과목당 40점 이상, 전과목 평균 60점 이상</p>
+      </div>
+
+      <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+        <!-- 종합 점수 카드 -->
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="bg-indigo-50 p-3.5 rounded-2xl border border-indigo-100">
+            <span class="text-xs text-indigo-600 font-semibold block">총 득점 / 만점</span>
+            <span id="resTotalScore" class="text-2xl font-black text-indigo-900 mt-1 block">85점</span>
+          </div>
+          <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+            <span class="text-xs text-slate-500 font-semibold block">맞힌 문항</span>
+            <span id="resCorrectCount" class="text-2xl font-black text-slate-800 mt-1 block">17 / 20</span>
+          </div>
+          <div id="resPassBox" class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-100">
+            <span class="text-xs text-emerald-600 font-semibold block">합격 판정</span>
+            <span id="resPassStatus" class="text-2xl font-black text-emerald-700 mt-1 block">합격</span>
+          </div>
+        </div>
+
+        <!-- 과목별 점수표 (종합 모의고사 시 상세 표시) -->
+        <div id="resSubjectBreakdown" class="space-y-2">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">과목별 성적 분석</h4>
+          <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-2 text-xs" id="resSubjectList">
+            <!-- 과목별 동적 바 생성 -->
+          </div>
+        </div>
+
+        <!-- 액션 버튼 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <button onclick="reviewWrongAnswers()" class="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation"></i> 오답만 모아서 복습하기
+          </button>
+          <button onclick="closeResultModal()" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm shadow transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-list-check"></i> 전체 답안 및 해설 확인
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-1">
+      <p class="font-medium text-slate-500">문화창업플래너 자격시험 대비 핵심 기출예상 CBT 시스템</p>
+      <p>본 CBT 시스템은 4개 과목 녹음 파일 및 강의 자료의 출제 포인트와 암시 내용을 종합 반영하여 제작되었습니다.</p>
+    </div>
+  </footer>
+
+  <!-- 문제 데이터 불러오기 -->
+  <script src="./data.js"></script>
+
+  <!-- 애플리케이션 스크립트 -->
+  <script>
+    // 상태 관리 변수
+    let currentSubjectKey = "subject1"; // subject1, subject2, subject3, subject4, all
+    let currentMode = "study"; // 'study' (학습모드) or 'exam' (실전시험모드)
+    let questionsList = [];
+    let currentIndex = 0;
+    let userAnswers = {}; // { questionKey: selectedOptionIndex }
+    let bookmarks = new Set();
+    let currentFilter = "all"; // 'all', 'unsolved', 'bookmarked', 'wrong'
+
+    // 타이머 관리
+    let examTimeSeconds = 25 * 60; // 25분 (과목별) or 100분 (전과목)
+    let timerInterval = null;
+
+    // 초기화
+    document.addEventListener("DOMContentLoaded", () => {
+      // URL 해시 기반 과목 선택 지원 (#subject1, #subject2, #subject3, #subject4, #all)
+      const hash = window.location.hash.replace("#", "");
+      if (hash && ["subject1", "subject2", "subject3", "subject4", "all"].includes(hash)) {
+        currentSubjectKey = hash;
+      }
+      loadSubject(currentSubjectKey);
+
+      // 키보드 단축키 지원 (1, 2, 3, 4, 이전, 다음)
+      document.addEventListener("keydown", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+        if (["1", "2", "3", "4"].includes(e.key)) {
+          const optIndex = parseInt(e.key) - 1;
+          selectOption(optIndex);
+        } else if (e.key === "ArrowLeft") {
+          prevQuestion();
+        } else if (e.key === "ArrowRight") {
+          nextQuestion();
+        }
+      });
+    });
+
+    // 과목 선택 및 로드
+    function selectSubject(key) {
+      currentSubjectKey = key;
+      window.location.hash = key;
+      loadSubject(key);
+    }
+
+    function loadSubject(key) {
+      // 탭 스타일 업데이트
+      document.querySelectorAll(".subject-tab").forEach(tab => {
+        tab.className = "subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 text-indigo-200 hover:bg-indigo-800/60";
+      });
+      const activeTab = document.getElementById(`tab-${key}`);
+      if (activeTab) {
+        activeTab.className = "subject-tab whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 bg-amber-400 text-indigo-950 shadow-sm font-bold";
+      }
+
+      // 문항 데이터 조립
+      questionsList = [];
+      if (key === "all") {
+        document.getElementById("subjectBadge").innerText = "전과목 종합";
+        document.getElementById("subjectTitle").innerText = "문화창업플래너 실전 종합 모의고사 (80문항)";
+        document.getElementById("subjectDesc").innerText = "1과목(창업이해) + 2과목(기획·전략) + 3과목(자금조달) + 4과목(조직관리) 총 80문항 실전 테스트";
+        
+        // 4과목 병합
+        ["subject1", "subject2", "subject3", "subject4"].forEach(sKey => {
+          const subj = QUIZ_DATA[sKey];
+          subj.questions.forEach(q => {
+            questionsList.push({
+              ...q,
+              uniqueId: `${sKey}_${q.id}`,
+              subjectId: sKey,
+              subjectName: subj.title.split(":")[0]
+            });
+          });
+        });
+        examTimeSeconds = 100 * 60; // 100분
+      } else {
+        const subj = QUIZ_DATA[key];
+        document.getElementById("subjectBadge").innerText = subj.title.split(":")[0];
+        document.getElementById("subjectTitle").innerText = subj.title.split(":")[1] || subj.title;
+        document.getElementById("subjectDesc").innerText = subj.description;
+        
+        subj.questions.forEach(q => {
+          questionsList.push({
+            ...q,
+            uniqueId: `${key}_${q.id}`,
+            subjectId: key,
+            subjectName: subj.title.split(":")[0]
+          });
+        });
+        examTimeSeconds = 25 * 60; // 25분
+      }
+
+      currentIndex = 0;
+      renderQuestion();
+      renderOMRGrid();
+      updateOMRStats();
+
+      // 실전모드일 경우 타이머 리셋
+      if (currentMode === "exam") {
+        startExamTimer();
+      }
+    }
+
+    // 모드 전환 (학습 모드 vs 실전 시험 모드)
+    function switchMode(mode) {
+      currentMode = mode;
+      const btnStudy = document.getElementById("btnModeStudy");
+      const btnExam = document.getElementById("btnModeExam");
+      const timerBadge = document.getElementById("examTimerBadge");
+      const btnSubmit = document.getElementById("btnSubmitExam");
+
+      if (mode === "study") {
+        btnStudy.className = "px-2.5 py-1 text-xs sm:text-sm rounded-lg font-semibold transition-all duration-200 flex items-center gap-1.5 bg-indigo-600 text-white shadow";
+        btnExam.className = "px-2.5 py-1 text-xs sm:text-sm rounded-lg font-semibold transition-all duration-200 flex items-center gap-1.5 text-indigo-200 hover:text-white";
+        timerBadge.classList.add("hidden");
+        timerBadge.classList.remove("flex");
+        btnSubmit.classList.add("hidden");
+        btnSubmit.classList.remove("flex");
+        clearInterval(timerInterval);
+      } else {
+        btnExam.className = "px-2.5 py-1 text-xs sm:text-sm rounded-lg font-semibold transition-all duration-200 flex items-center gap-1.5 bg-rose-600 text-white shadow";
+        btnStudy.className = "px-2.5 py-1 text-xs sm:text-sm rounded-lg font-semibold transition-all duration-200 flex items-center gap-1.5 text-indigo-200 hover:text-white";
+        timerBadge.classList.remove("hidden");
+        timerBadge.classList.add("flex");
+        btnSubmit.classList.remove("hidden");
+        btnSubmit.classList.add("flex");
+        startExamTimer();
+      }
+
+      renderQuestion();
+      renderOMRGrid();
+    }
+
+    // 타이머 동작
+    function startExamTimer() {
+      clearInterval(timerInterval);
+      let remain = examTimeSeconds;
+      const timerText = document.getElementById("timerText");
+
+      function updateTimerDisplay() {
+        const m = Math.floor(remain / 60);
+        const s = remain % 60;
+        timerText.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        if (remain <= 300) { // 5분 이하 경고
+          timerText.classList.add("text-rose-400", "animate-pulse");
+        }
+      }
+
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        remain--;
+        if (remain < 0) {
+          clearInterval(timerInterval);
+          alert("시험 시간이 종료되었습니다! 답안이 자동 채점됩니다.");
+          submitExam();
+          return;
+        }
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    // 문항 렌더링
+    function renderQuestion() {
+      if (questionsList.length === 0) return;
+      const q = questionsList[currentIndex];
+
+      // 번호 태그 & 텍스트
+      document.getElementById("qNumberTag").innerText = `Q${currentIndex + 1}`;
+      document.getElementById("qSubjectTag").innerText = q.subjectName || "과목";
+      document.getElementById("qText").innerText = q.question;
+      document.getElementById("progressText").innerText = `${currentIndex + 1} / ${questionsList.length}`;
+
+      // 북마크 상태 표시
+      const btnBookmark = document.getElementById("btnBookmark");
+      if (bookmarks.has(q.uniqueId)) {
+        btnBookmark.innerHTML = `<i class="fa-solid fa-star text-amber-500"></i> <span class="text-amber-600 font-bold">북마크됨</span>`;
+        btnBookmark.classList.add("border-amber-400", "bg-amber-50");
+      } else {
+        btnBookmark.innerHTML = `<i class="fa-regular fa-star text-amber-400"></i> <span>북마크</span>`;
+        btnBookmark.classList.remove("border-amber-400", "bg-amber-50");
+      }
+
+      // 이전/다음 버튼 활성/비활성
+      document.getElementById("btnPrev").disabled = (currentIndex === 0);
+      document.getElementById("btnNext").disabled = (currentIndex === questionsList.length - 1);
+
+      // 보기(선택지) 렌더링
+      const container = document.getElementById("optionsContainer");
+      container.innerHTML = "";
+
+      const selectedOpt = userAnswers[q.uniqueId];
+      const hasAnswered = (selectedOpt !== undefined);
+
+      q.options.forEach((optText, idx) => {
+        const optNum = idx + 1;
+        const btn = document.createElement("button");
+        btn.onclick = () => selectOption(idx);
+        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all duration-150 flex items-start gap-3 text-xs sm:text-sm leading-relaxed group";
+
+        let badgeClass = "w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 transition-colors";
+        let cardStyle = "border-slate-200 hover:border-indigo-400 hover:bg-slate-50 text-slate-700";
+
+        if (currentMode === "study") {
+          // 학습 모드: 풀었으면 즉시 정답/오답 표시
+          if (hasAnswered) {
+            if (idx === q.answer) {
+              // 정답 보기
+              cardStyle = "border-emerald-500 bg-emerald-50 text-emerald-950 font-medium ring-1 ring-emerald-500";
+              badgeClass += " bg-emerald-600 text-white";
+            } else if (selectedOpt === idx) {
+              // 내가 찍은 오답 보기
+              cardStyle = "border-rose-400 bg-rose-50 text-rose-950 font-medium ring-1 ring-rose-400";
+              badgeClass += " bg-rose-600 text-white";
+            } else {
+              cardStyle = "border-slate-200 text-slate-400 opacity-70";
+              badgeClass += " bg-slate-100 text-slate-400";
+            }
+          } else {
+            badgeClass += " bg-slate-100 text-slate-600 group-hover:bg-indigo-600 group-hover:text-white";
+          }
+        } else {
+          // 실전 모드: 단순 선택 마킹 표시만
+          if (selectedOpt === idx) {
+            cardStyle = "border-indigo-600 bg-indigo-50/80 text-indigo-950 font-semibold ring-1 ring-indigo-600";
+            badgeClass += " bg-indigo-600 text-white";
+          } else {
+            badgeClass += " bg-slate-100 text-slate-600 group-hover:bg-indigo-600 group-hover:text-white";
+          }
+        }
+
+        btn.className += ` ${cardStyle}`;
+        btn.innerHTML = `
+          <span class="${badgeClass}">${optNum}</span>
+          <span class="flex-1 pt-0.5">${optText}</span>
+        `;
+        container.appendChild(btn);
+      });
+
+      // 해설 박스 제어
+      const explanationBox = document.getElementById("explanationBox");
+      if (currentMode === "study" && hasAnswered) {
+        explanationBox.classList.remove("hidden");
+        const isCorrect = (selectedOpt === q.answer);
+        const resultBadge = document.getElementById("answerResultBadge");
+        if (isCorrect) {
+          resultBadge.className = "text-xs font-bold px-2 py-0.5 rounded text-white bg-emerald-600";
+          resultBadge.innerText = "정답입니다!";
+        } else {
+          resultBadge.className = "text-xs font-bold px-2 py-0.5 rounded text-white bg-rose-600";
+          resultBadge.innerText = "오답입니다";
+        }
+        document.getElementById("correctAnswerNum").innerText = ["①", "②", "③", "④"][q.answer];
+        document.getElementById("hintText").innerText = q.hint || "해당 문항의 강사 강조 포인트";
+        document.getElementById("explanationText").innerText = q.explanation;
+      } else {
+        explanationBox.classList.add("hidden");
+      }
+    }
+
+    // 보기 클릭 시 선택
+    function selectOption(optIndex) {
+      const q = questionsList[currentIndex];
+      userAnswers[q.uniqueId] = optIndex;
+      renderQuestion();
+      renderOMRGrid();
+      updateOMRStats();
+    }
+
+    // 북마크 토글
+    function toggleBookmarkCurrent() {
+      const q = questionsList[currentIndex];
+      if (bookmarks.has(q.uniqueId)) {
+        bookmarks.delete(q.uniqueId);
+      } else {
+        bookmarks.add(q.uniqueId);
+      }
+      renderQuestion();
+      renderOMRGrid();
+    }
+
+    // 이전/다음 문항 이동
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questionsList.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      currentIndex = idx;
+      renderQuestion();
+    }
+
+    // OMR 그리드 렌더링
+    function renderOMRGrid() {
+      const grid = document.getElementById("omrGrid");
+      grid.innerHTML = "";
+
+      questionsList.forEach((q, idx) => {
+        const isCurrent = (currentIndex === idx);
+        const hasAnswered = (userAnswers[q.uniqueId] !== undefined);
+        const isBookmarked = bookmarks.has(q.uniqueId);
+        const isCorrect = hasAnswered && (userAnswers[q.uniqueId] === q.answer);
+
+        // 필터링 적용
+        if (currentFilter === "unsolved" && hasAnswered) return;
+        if (currentFilter === "bookmarked" && !isBookmarked) return;
+        if (currentFilter === "wrong" && (!hasAnswered || isCorrect)) return;
+
+        const btn = document.createElement("button");
+        btn.onclick = () => jumpToQuestion(idx);
+
+        let style = "h-9 rounded-lg text-xs font-bold flex items-center justify-center relative border transition shadow-xs";
+
+        if (isCurrent) {
+          style += " ring-2 ring-indigo-500 ring-offset-1";
+        }
+
+        if (currentMode === "study" && hasAnswered) {
+          if (isCorrect) {
+            style += " bg-emerald-500 border-emerald-600 text-white";
+          } else {
+            style += " bg-rose-500 border-rose-600 text-white";
+          }
+        } else {
+          if (hasAnswered) {
+            style += " bg-indigo-600 border-indigo-700 text-white";
+          } else {
+            style += " bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100";
+          }
+        }
+
+        btn.className = style;
+        btn.innerHTML = `
+          <span>${idx + 1}</span>
+          ${isBookmarked ? '<i class="fa-solid fa-star text-[9px] text-amber-300 absolute top-1 right-1"></i>' : ''}
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    // OMR 현황 통계 업데이트
+    function updateOMRStats() {
+      const total = questionsList.length;
+      let solved = 0;
+      let correct = 0;
+
+      questionsList.forEach(q => {
+        if (userAnswers[q.uniqueId] !== undefined) {
+          solved++;
+          if (userAnswers[q.uniqueId] === q.answer) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById("omrSolvedCount").innerText = solved;
+      document.getElementById("omrRemainCount").innerText = total - solved;
+
+      if (solved > 0) {
+        const acc = Math.round((correct / solved) * 100);
+        document.getElementById("omrAccuracy").innerText = `${acc}%`;
+      } else {
+        document.getElementById("omrAccuracy").innerText = "- %";
+      }
+    }
+
+    // OMR 필터 설정
+    function setFilter(filterType) {
+      currentFilter = filterType;
+      document.querySelectorAll(".omr-filter").forEach(b => {
+        b.className = "omr-filter px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100 text-[11px]";
+      });
+      const activeBtn = document.getElementById(`filter-${filterType}`);
+      if (activeBtn) {
+        activeBtn.className = "omr-filter px-2 py-0.5 rounded font-semibold bg-indigo-100 text-indigo-700 text-[11px]";
+      }
+      renderOMRGrid();
+    }
+
+    // 현재 과목 초기화
+    function resetCurrentQuiz() {
+      if (confirm("현재 과목의 모든 답안 마킹을 초기화하시겠습니까?")) {
+        questionsList.forEach(q => {
+          delete userAnswers[q.uniqueId];
+        });
+        renderQuestion();
+        renderOMRGrid();
+        updateOMRStats();
+      }
+    }
+
+    // 시험 최종 제출 및 성적표 산출
+    function submitExam() {
+      const total = questionsList.length;
+      let solved = 0;
+      let correct = 0;
+
+      // 과목별 점수 집계 객체
+      const subjectScores = {
+        subject1: { name: "1과목 문화콘텐츠 창업의 이해", total: 0, correct: 0 },
+        subject2: { name: "2과목 창업기획 및 전략수립", total: 0, correct: 0 },
+        subject3: { name: "3과목 문화콘텐츠기업 자금조달", total: 0, correct: 0 },
+        subject4: { name: "4과목 문화콘텐츠기업 조직관리", total: 0, correct: 0 }
+      };
+
+      questionsList.forEach(q => {
+        const sId = q.subjectId;
+        if (subjectScores[sId]) {
+          subjectScores[sId].total++;
+        }
+        if (userAnswers[q.uniqueId] !== undefined) {
+          solved++;
+          if (userAnswers[q.uniqueId] === q.answer) {
+            correct++;
+            if (subjectScores[sId]) {
+              subjectScores[sId].correct++;
+            }
+          }
+        }
+      });
+
+      // 미풀이 문항 체크 알림
+      if (solved < total) {
+        const proceed = confirm(`총 ${total}문항 중 ${total - solved}문항을 아직 풀지 않았습니다. 그래도 시험을 제출하시겠습니까?`);
+        if (!proceed) return;
+      }
+
+      // 점수 계산 (100점 만점 기준 환산)
+      const totalScore = Math.round((correct / total) * 100);
+
+      // 과락 및 합격 판정
+      // 자격시험 기준: 과목당 40점 미만 과락, 전과목 평균 60점 이상 합격
+      let isFailBySubject = false;
+      let failSubjectNames = [];
+
+      Object.keys(subjectScores).forEach(key => {
+        const s = subjectScores[key];
+        if (s.total > 0) {
+          const sScore = Math.round((s.correct / s.total) * 100);
+          s.score = sScore;
+          if (sScore < 40) {
+            isFailBySubject = true;
+            failSubjectNames.push(s.name);
+          }
+        }
+      });
+
+      const isPass = (totalScore >= 60) && !isFailBySubject;
+
+      // 성적표 모달 UI 반영
+      document.getElementById("resTotalScore").innerText = `${totalScore}점`;
+      document.getElementById("resCorrectCount").innerText = `${correct} / ${total}`;
+
+      const resPassBox = document.getElementById("resPassBox");
+      const resPassStatus = document.getElementById("resPassStatus");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultIcon = document.getElementById("resultIcon");
+
+      if (isPass) {
+        resPassBox.className = "bg-emerald-50 p-3.5 rounded-2xl border border-emerald-100";
+        resPassStatus.innerText = "합격 🎉";
+        resPassStatus.className = "text-2xl font-black text-emerald-700 mt-1 block";
+        resultTitle.innerText = "합격을 진심으로 축하드립니다!";
+        resultIcon.className = "w-16 h-16 rounded-2xl bg-amber-400 text-indigo-950 flex items-center justify-center mx-auto mb-3 text-3xl font-black shadow-lg";
+        resultIcon.innerHTML = `<i class="fa-solid fa-trophy"></i>`;
+      } else {
+        resPassBox.className = "bg-rose-50 p-3.5 rounded-2xl border border-rose-100";
+        resPassStatus.innerText = isFailBySubject ? "과락 불합격" : "점수 미달";
+        resPassStatus.className = "text-2xl font-black text-rose-700 mt-1 block";
+        resultTitle.innerText = isFailBySubject ? `[${failSubjectNames.join(", ")}] 과락 기준(40점 미만)에 해당합니다.` : "합격 기준(평균 60점)에 미달하였습니다.";
+        resultIcon.className = "w-16 h-16 rounded-2xl bg-rose-500 text-white flex items-center justify-center mx-auto mb-3 text-3xl font-black shadow-lg";
+        resultIcon.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>`;
+      }
+
+      // 과목별 점수 리스트 생성
+      const subjectListContainer = document.getElementById("resSubjectList");
+      subjectListContainer.innerHTML = "";
+
+      Object.keys(subjectScores).forEach(k => {
+        const s = subjectScores[k];
+        if (s.total > 0) {
+          const sScore = s.score || 0;
+          const isSubjectFail = sScore < 40;
+          const row = document.createElement("div");
+          row.className = "flex items-center justify-between p-2 rounded-lg bg-white border border-slate-100";
+          row.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full ${isSubjectFail ? 'bg-rose-500' : 'bg-emerald-500'}"></span>
+              <span class="font-bold text-slate-700">${s.name}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-slate-500">${s.correct}/${s.total} 문항</span>
+              <span class="font-black ${isSubjectFail ? 'text-rose-600' : 'text-indigo-600'} w-12 text-right">${sScore}점</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${isSubjectFail ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">${isSubjectFail ? '과락' : '통과'}</span>
+            </div>
+          `;
+          subjectListContainer.appendChild(row);
+        }
+      });
+
+      // 모달 표시
+      document.getElementById("resultModal").classList.remove("hidden");
+
+      // 실전 모드였으면 해설 확인이 가능하도록 학습 모드로 자동 전환하여 오답 검토 지원
+      switchMode("study");
+    }
+
+    function closeResultModal() {
+      document.getElementById("resultModal").classList.add("hidden");
+    }
+
+    function reviewWrongAnswers() {
+      closeResultModal();
+      setFilter("wrong");
+      // 첫 번째 오답으로 이동
+      const firstWrongIdx = questionsList.findIndex(q => {
+        return userAnswers[q.uniqueId] !== undefined && userAnswers[q.uniqueId] !== q.answer;
+      });
+      if (firstWrongIdx !== -1) {
+        jumpToQuestion(firstWrongIdx);
+      }
+    }
+
+    // 워드/구글독스 시험지 다운로드 모달 로직
+    function toggleDownloadModal() {
+      const modal = document.getElementById("downloadModal");
+      modal.classList.toggle("hidden");
+    }
+
+    // 재무 계산기 로직
+    let calcExpression = "";
+    function toggleCalculator() {
+      const modal = document.getElementById("calcModal");
+      modal.classList.toggle("hidden");
+    }
+
+    function calcNum(n) {
+      if (calcExpression === "0" && n !== ".") {
+        calcExpression = n;
+      } else {
+        calcExpression += n;
+      }
+      document.getElementById("calcDisplay").innerText = calcExpression;
+    }
+
+    function calcOp(op) {
+      if (calcExpression === "") return;
+      const lastChar = calcExpression.slice(-1);
+      if (["+", "-", "*", "/", "%"].includes(lastChar)) {
+        calcExpression = calcExpression.slice(0, -1) + op;
+      } else {
+        calcExpression += op;
+      }
+      document.getElementById("calcDisplay").innerText = calcExpression;
+    }
+
+    function calcClear() {
+      calcExpression = "";
+      document.getElementById("calcDisplay").innerText = "0";
+      document.getElementById("calcHistory").innerText = "";
+    }
+
+    function calcBackspace() {
+      calcExpression = calcExpression.slice(0, -1);
+      document.getElementById("calcDisplay").innerText = calcExpression || "0";
+    }
+
+    function calcEquals() {
+      try {
+        if (!calcExpression) return;
+        document.getElementById("calcHistory").innerText = calcExpression + " =";
+        // 안전한 산술 계산
+        const sanitized = calcExpression.replace(/[^0-9+\-*/.%]/g, "");
+        const result = Function('"use strict";return (' + sanitized + ')')();
+        calcExpression = String(Math.round(result * 10000) / 10000);
+        document.getElementById("calcDisplay").innerText = calcExpression;
+      } catch (err) {
+        document.getElementById("calcDisplay").innerText = "Error";
+        calcExpression = "";
+      }
+    }
+  </script>
+</body>
+</html>
